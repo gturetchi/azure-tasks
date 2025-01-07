@@ -19,6 +19,24 @@
       "mode": "view"
     }
   ],
+  "preferences": [
+    {
+      "description": "The organization name of the Azure DevOps account which you will search trough",
+      "name": "organizationName",
+      "placeholder": "myorg",
+      "required": true,
+      "title": "The organization name",
+      "type": "textfield"
+    },
+    {
+      "description": "The personal access token for the given Azure DevOps account. Don't base64 encode it, just paste it as is.",
+      "name": "personalAccessToken",
+      "placeholder": "urbyvbv....",
+      "required": true,
+      "title": "Azure DevOps PAT",
+      "type": "password"
+    }
+  ],
   "dependencies": {
     "@raycast/api": "^1.88.4",
     "@raycast/utils": "^1.17.0"
