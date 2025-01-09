@@ -1,26 +1,12 @@
-export type ProjectCollection = {
-  id: string;
-  name: string;
-  url: string;
-  collectionUrl: string;
-};
-
-export type DefaultTeam = {
-  id: string;
-  name: string;
-  url: string;
-};
-
 export type Project = {
   id: string;
   name: string;
-  url: string;
   description: string;
-  collection: ProjectCollection;
-  defaultTeam: DefaultTeam;
+  url: string;
+  state: string;
 };
 
-export type ApiProjectResponse = {
-  value: Project[];
+export interface ProjectResponse {
   count: number;
-};
+  value: Project[];
+}

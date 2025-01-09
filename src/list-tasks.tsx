@@ -4,7 +4,7 @@ import { WorkItem, WorkItemResponse } from "./models/taskList";
 import { baseApiUrl, preparedPersonalAccessToken } from "./preferences";
 
 export default function Command() {
-  const { data, isLoading } = useFetch<WorkItemResponse>(`${baseApiUrl()}/SRE/_apis/wit/wiql`, {
+  const { data, error, isLoading } = useFetch<WorkItemResponse>(`${baseApiUrl()}/SRE/_apis/wit/wiql`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -25,17 +25,7 @@ export default function Command() {
 
   console.log("Base URL:", baseApiUrl());
   console.log("Auth Token:", preparedPersonalAccessToken());
-  console.log("Request Body:", {
-    query: `
-        SELECT
-          [System.Id],
-          [System.Title],
-          [System.AssignedTo],
-          [System.State]
-        FROM workitems
-        WHERE [System.AssignedTo] = @Me
-      `,
-  });
+  console.log(error);
 
   return (
     <List isLoading={isLoading}>

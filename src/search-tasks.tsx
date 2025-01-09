@@ -1,16 +1,17 @@
 import { List, Icon } from "@raycast/api";
 import { useFetch } from "@raycast/utils";
-import { ApiProjectResponse, Project } from "./models/project";
+import { ProjectResponse, Project } from "./models/project";
 import { baseApiUrl, preparedPersonalAccessToken } from "./preferences";
 
 export default function Command() {
-  const { data, isLoading } = useFetch<ApiProjectResponse>(`${baseApiUrl()}/_apis/projects`, {
+  const { data, isLoading } = useFetch<ProjectResponse>(`${baseApiUrl()}/_apis/projects`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Basic ${preparedPersonalAccessToken()}`,
     },
   });
 
+  console.log(data);
   return (
     <List isLoading={isLoading}>
       {data?.value.map((project: Project) => (
@@ -20,7 +21,7 @@ export default function Command() {
           subtitle={project.description || "No description available"}
           accessories={[
             {
-              text: project.defaultTeam?.name || "No Default Team",
+              text: project.state || "No Default Team",
               icon: Icon.Code,
             },
           ]}
