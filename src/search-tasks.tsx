@@ -1,20 +1,36 @@
 import { List, Icon } from "@raycast/api";
 import { useFetch } from "@raycast/utils";
 import { ProjectResponse, Project } from "./models/project";
+import { TeamsResponse } from "./models/team";
 import { baseApiUrl, preparedPersonalAccessToken } from "./preferences";
 
 export default function Command() {
-  const { data, isLoading } = useFetch<ProjectResponse>(`${baseApiUrl()}/_apis/projects`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Basic ${preparedPersonalAccessToken()}`,
+  const { data: projectData, isLoading: isProjectLoading } = useFetch<ProjectResponse>(
+    `${baseApiUrl()}/_apis/projects`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Basic ${preparedPersonalAccessToken()}`,
+      },
     },
-  });
+  );
 
-  console.log(data);
+  const { data: teamData, isLoading: isTeamLoading } = useFetch<TeamsResponse>(
+    `${baseApiUrl()}/_apis/projects/d831c035-9a76-48f9-9dcb-e37fff489248/teams`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Basic ${preparedPersonalAccessToken()}`,
+      },
+    },
+  );
+
+  // Log team data for debugging
+  console.log("Team Data:", teamData);
+
   return (
-    <List isLoading={isLoading}>
-      {data?.value.map((project: Project) => (
+    <List isLoading={isProjectLoading}>
+      {projectData?.value.map((project: Project) => (
         <List.Item
           key={project.id}
           title={project.name}
