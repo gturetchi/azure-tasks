@@ -1,30 +1,37 @@
 import { List, Icon, Action, ActionPanel, useNavigation } from "@raycast/api";
 import { useFetch } from "@raycast/utils";
 import { ProjectResponse, Project } from "./models/project";
-import { TeamsResponse, Team } from "./models/team";
+import { WorkItemResponse, WorkItem } from "./models/task";
 import { baseApiUrl, preparedPersonalAccessToken } from "./preferences";
 
-function TeamsList({ projectId }: { projectId: string }) {
-  const { data: teamData, isLoading: isTeamLoading } = useFetch<TeamsResponse>(
-    `${baseApiUrl()}/_apis/projects/${projectId}/teams`,
+function TaskList({ projectName }: { projectName: string }) {
+  const { data, isLoading } = useFetch<WorkItemResponse>(
+    `${baseApiUrl()}/${projectName}/_apis/wit/wiql?api-version=7.2-preview.2`,
     {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Basic ${preparedPersonalAccessToken()}`,
       },
+      body: JSON.stringify({
+        query:
+          "Select [System.Id], [System.Title], [System.State] From WorkItems Where [System.TeamProject] = @project AND [System.AssignedTo] = @Me",
+      }),
     },
   );
 
+  console.log(data?.workItems);
+
   return (
-    <List isLoading={isTeamLoading}>
-      {teamData?.value.map((team: Team) => (
+    <List isLoading={isLoading}>
+      {data?.workItems.map((workItem: WorkItem) => (
         <List.Item
-          key={team.id}
-          title={team.name}
-          subtitle={team.description || "No description available"}
+          key={workItem.id}
+          title={workItem.url}
+          subtitle={workItem.url || "No description available"}
           accessories={[
             {
-              text: team.url || "No Default Team",
+              text: workItem.url || "No Default Team",
               icon: Icon.Code,
             },
           ]}
@@ -36,7 +43,6 @@ function TeamsList({ projectId }: { projectId: string }) {
 
 export default function Command() {
   const { push } = useNavigation();
-
   const { data: projectData, isLoading: isProjectLoading } = useFetch<ProjectResponse>(
     `${baseApiUrl()}/_apis/projects`,
     {
@@ -56,7 +62,7 @@ export default function Command() {
           subtitle={project.description || "No description available"}
           actions={
             <ActionPanel>
-              <Action title="Push" onAction={() => push(<TeamsList projectId={project.id} />)} />
+              <Action title="Push" onAction={() => push(<TaskList projectName={project.name} />)} />
             </ActionPanel>
           }
           accessories={[

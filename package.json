@@ -17,13 +17,6 @@
       "subtitle": "Search the tasks on azure devops",
       "description": "This command retrives the task list from azure devops organisation",
       "mode": "view"
-    },
-    {
-      "name": "list-tasks",
-      "title": "List Tasks",
-      "subtitle": "Search the tasks on azure devops",
-      "description": "This command retrives the task list from azure devops organisation",
-      "mode": "view"
     }
   ],
   "preferences": [
