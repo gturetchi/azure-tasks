@@ -1,26 +1,26 @@
 import { List, Icon, Detail } from "@raycast/api";
 import { fetchWorkItems } from "../../api/fetchTasks";
-import { WorkItem } from "../../models/task";
+import { WorkItemDetails } from "../../models/task";
 
 export default function TaskList({ projectName }: { projectName: string }) {
   const { data, isLoading } = fetchWorkItems(projectName);
 
   return (
-    <Detail markdown={data?.value[0].fields["System.Title"]} />
-    // <List isLoading={isLoading}>
-    //   {data?.map((workItem: WorkItem) => (
-    //     <List.Item
-    //       key={workItem.id}
-    //       title={workItem.url}
-    //       subtitle={workItem.url || "No description available"}
-    //       accessories={[
-    //         {
-    //           text: workItem.url || "No Default Team",
-    //           icon: Icon.Code,
-    //         },
-    //       ]}
-    //     />
-    //   ))}
-    // </List>
+    <List isLoading={isLoading}>
+      {data?.value.map((workItem: WorkItemDetails) => (
+        <List.Item
+          key={workItem.id}
+          icon={Icon.List}
+          title={workItem.fields["System.Title"]}
+          subtitle={workItem.fields["System.State"] || "No description available"}
+          accessories={[
+            {
+              text: workItem.url || "No Default Team",
+              icon: Icon.Code,
+            },
+          ]}
+        />
+      ))}
+    </List>
   );
 }
