@@ -11,7 +11,7 @@ export default function ProjectList() {
     <List isLoading={isProjectLoading}>
       {data?.value.map((project: Project) => (
         <List.Item
-          icon={Icon.Gear}
+          icon={Icon.Code}
           key={project.id}
           title={project.name}
           subtitle={project.description?.length > 70 ? `${project.description.slice(0, 70)}...` : project.description}

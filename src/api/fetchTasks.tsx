@@ -40,7 +40,5 @@ export const fetchWorkItems = (projectName: string) => {
   const isLoading = isLoadingIds || isLoadingDetails;
   const error = idsError || detailsError;
 
-  console.log(workItemDetails);
-
   return { data: workItemDetails, isLoading, error };
 };

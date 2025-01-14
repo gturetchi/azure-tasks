@@ -58,15 +58,16 @@ export type WorkItemFields = {
   "System.ChangedDate": string;
   "System.ChangedBy": UserDetails;
   "System.AuthorizedAs": UserDetails;
-  "System.AssignedTo"?: string; // Nullable or optional
+  "System.AssignedTo"?: string;
   "System.PersonId": number;
   "System.Watermark": number;
   "System.Title": string;
-  "System.Description"?: string; // Nullable or optional
-  "Microsoft.VSTS.Scheduling.Effort"?: number; // Nullable or optional
-  "Microsoft.VSTS.Scheduling.RemainingWork"?: number; // Nullable or optional
-  "System.Tags"?: string; // Nullable or optional
-  [key: string]: unknown; // Catch-all for untyped fields
+  "System.Description"?: string;
+  "Microsoft.VSTS.Scheduling.Effort"?: number;
+  "Microsoft.VSTS.Scheduling.RemainingWork"?: number;
+  "Microsoft.VSTS.Common.AcceptanceCriteria"?: string;
+  "System.Tags"?: string;
+  [key: string]: unknown;
 };
 
 export type UserDetails = {
