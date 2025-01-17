@@ -2,11 +2,14 @@ import { Icon, Detail } from "@raycast/api";
 import { WorkItemDetails } from "../../models/task";
 
 export default function TaskDetails({ workItemDetails }: { workItemDetails: WorkItemDetails }) {
+  const TurndownService = require("turndown") as any;
+  const turndownService = new TurndownService();
+  const markdown = turndownService.turndown(workItemDetails.fields["System.Description"]);
   const date = new Date(workItemDetails.fields["System.CreatedDate"]);
 
   return (
     <Detail
-      markdown={`# Hello World! \n *** `}
+      markdown={markdown}
       navigationTitle={workItemDetails.id.toString()}
       metadata={
         <Detail.Metadata>
