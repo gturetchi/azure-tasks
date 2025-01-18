@@ -1,11 +1,28 @@
-import { Icon, Detail } from "@raycast/api";
+import { Detail } from "@raycast/api";
 import { WorkItemDetails } from "../../models/task";
+import GetTaskIconType from "../../utils/IconType";
 
 export default function TaskDetails({ workItemDetails }: { workItemDetails: WorkItemDetails }) {
   const TurndownService = require("turndown") as any;
   const turndownService = new TurndownService();
-  const markdown = turndownService.turndown(workItemDetails.fields["System.Description"]);
+  const descriptionMarkdown = turndownService.turndown(workItemDetails.fields["System.Description"] || "");
+  const criteriaMarkdown = turndownService.turndown(
+    workItemDetails.fields["Microsoft.VSTS.Common.AcceptanceCriteria"] || "",
+  );
   const date = new Date(workItemDetails.fields["System.CreatedDate"]);
+  let markdown = "";
+
+  if (descriptionMarkdown.length > 0) {
+    markdown += `## Description \n ${descriptionMarkdown} \n\n `;
+  }
+
+  if (criteriaMarkdown.length > 0) {
+    markdown += `--- \n ## Acceptance Criteria \n ${criteriaMarkdown}\n\n`;
+  }
+
+  if (descriptionMarkdown.length == 0 && criteriaMarkdown.length == 0) {
+    markdown += `No description available`;
+  }
 
   return (
     <Detail
@@ -13,7 +30,11 @@ export default function TaskDetails({ workItemDetails }: { workItemDetails: Work
       navigationTitle={workItemDetails.id.toString()}
       metadata={
         <Detail.Metadata>
-          <Detail.Metadata.Label title="State" text={workItemDetails.fields["System.State"]} />
+          <Detail.Metadata.Label
+            title="State"
+            icon={GetTaskIconType(workItemDetails.fields["System.State"])}
+            text={workItemDetails.fields["System.State"]}
+          />
           <Detail.Metadata.Label title="Assigned to" text={workItemDetails.fields["System.AssignedTo"]} />
           <Detail.Metadata.Label title="Date created" text={date.toISOString().split("T")[0]} />
         </Detail.Metadata>
