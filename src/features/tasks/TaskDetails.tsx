@@ -1,9 +1,9 @@
-import { Detail, Color } from "@raycast/api";
+import { Detail } from "@raycast/api";
 import { WorkItemDetails } from "../../models/task";
 import { GetTaskIconType, GetIconColor } from "../../utils/IconType";
+import TurndownService from "turndown";
 
 export default function TaskDetails({ workItemDetails }: { workItemDetails: WorkItemDetails }) {
-  const TurndownService = require("turndown") as any;
   const turndownService = new TurndownService();
   const descriptionMarkdown = turndownService.turndown(workItemDetails.fields["System.Description"] || "");
   const criteriaMarkdown = turndownService.turndown(
