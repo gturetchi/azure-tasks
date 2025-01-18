@@ -1,6 +1,6 @@
-import { Icon } from "@raycast/api";
+import { Icon, Color } from "@raycast/api";
 
-export default function GetTaskIconType(taskStatus: string) {
+export function GetTaskIconType(taskStatus: string) {
   switch (taskStatus) {
     case "New":
       return Icon.Circle;
@@ -14,5 +14,22 @@ export default function GetTaskIconType(taskStatus: string) {
       return Icon.CircleProgress100;
     default:
       return Icon.Circle;
+  }
+}
+
+export function GetIconColor(taskStatus: string) {
+  switch (taskStatus) {
+    case "New":
+      return Color.Red;
+    case "Active":
+      return Color.Orange;
+    case "Resolved":
+      return Color.Green;
+    case "Closed":
+      return Icon.CircleProgress100;
+    case "Done":
+      return Color.Green;
+    default:
+      return Color.Magenta;
   }
 }
